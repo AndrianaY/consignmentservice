@@ -3,9 +3,37 @@ syntax = "proto3";
 
 package consignment;
 
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+    info: {
+        title: "consignment";
+        version: "1.0";
+        contact: {
+            name: "consignment";
+            url: "";
+            email: "";
+        };
+    };
+    schemes: HTTP;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
 service ShippingService {
-    rpc CreateConsignment(Consignment) returns (Response) {}
-    rpc GetConsignments(GetRequest) returns (Response) {}
+    rpc CreateConsignment (Consignment) returns (Response) {
+        option (google.api.http) = {
+            post: "/consignment"
+            body: "*"
+        };
+    }
+    rpc GetConsignments (GetRequest) returns (Response) {
+        option (google.api.http) = {
+            get: "/consignment/all"
+        };
+    }
 }
 
 message Consignment {
@@ -23,7 +51,8 @@ message Container {
     string user_id = 4;
 }
 
-message GetRequest {}
+message GetRequest {
+}
 
 message Response {
     bool created = 1;
